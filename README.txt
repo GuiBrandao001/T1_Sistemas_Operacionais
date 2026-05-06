@@ -1,4 +1,4 @@
-# T1 - Simulador de Escalonamento de Processos
+#T1 - Simulador de Escalonamento de Processos
 
 Trabalho desenvolvido para a disciplina de Sistemas Operacionais utilizando C++.
 
