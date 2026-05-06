@@ -1,4 +1,4 @@
-# T1 — Simulador de Escalonamento de Processos
+# T1 - Simulador de Escalonamento de Processos
 
 Trabalho desenvolvido para a disciplina de Sistemas Operacionais utilizando C++.
 
@@ -13,18 +13,18 @@ O simulador realiza:
 - Leitura de processos via arquivo
 - Simulação dos algoritmos de escalonamento
 - Exibição da execução dos processos
-- Cálculo de métricas como:
+- Cálculo de métricas:
   - Tempo de espera
   - Tempo de retorno
   - Tempo de término
 
 ---
 
-# 🛠️ PASSO 0 — Preparação do Ambiente (macOS)
+# PASSO 0 - Preparação do Ambiente (macOS)
 
 Antes de executar o projeto, é necessário instalar as ferramentas de compilação do C++ no macOS.
 
-Durante o desenvolvimento deste trabalho foram encontrados problemas comuns relacionados ao Xcode Command Line Tools, então este guia inclui os passos completos.
+Durante o desenvolvimento deste trabalho foram encontrados problemas relacionados ao Xcode Command Line Tools, então este guia inclui os passos completos.
 
 ---
 
@@ -35,7 +35,7 @@ Durante o desenvolvimento deste trabalho foram encontrados problemas comuns rela
 Abra:
 
 ```txt
-Applications → Utilities → Terminal
+Applications -> Utilities -> Terminal
 ```
 
 ou pesquise por:
@@ -135,7 +135,7 @@ Apple clang version ...
 
 ---
 
-# 📁 Estrutura do Projeto
+# Estrutura do Projeto
 
 ```txt
 T1_Sistemas_Operacionais/
@@ -172,7 +172,7 @@ Sempre executa o processo com menor tempo restante.
 
 Executa primeiro o processo de maior prioridade.
 
-> Menor número = maior prioridade.
+Menor número = maior prioridade.
 
 ---
 
@@ -194,7 +194,7 @@ P3 2 8 3
 P4 3 6 2
 ```
 
-## Formato:
+Formato:
 
 ```txt
 Quantum
