@@ -13,125 +13,11 @@ O simulador realiza:
 - Leitura de processos via arquivo
 - Simulação dos algoritmos de escalonamento
 - Exibição da execução dos processos
+- Exibição da ordem de processamento
 - Cálculo de métricas:
   - Tempo de espera
   - Tempo de retorno
   - Tempo de término
-
----
-
-# PASSO 0 - Preparação do Ambiente (macOS)
-
-Antes de executar o projeto, é necessário instalar as ferramentas de compilação do C++ no macOS.
-
-Durante o desenvolvimento deste trabalho foram encontrados problemas relacionados ao Xcode Command Line Tools, então este guia inclui os passos completos.
-
----
-
-# Instalação das Dependências no macOS
-
-## 1. Abrir o Terminal
-
-Abra:
-
-```txt
-Applications -> Utilities -> Terminal
-```
-
-ou pesquise por:
-
-```txt
-Terminal
-```
-
-no Spotlight.
-
----
-
-## 2. Instalar Command Line Tools
-
-Execute:
-
-```bash
-xcode-select --install
-```
-
-Isso instala:
-
-- g++
-- clang++
-- git
-- ferramentas de compilação
-
----
-
-## Problema Comum
-
-Caso apareça erro como:
-
-```txt
-No developer tools were found
-```
-
-ou:
-
-```txt
-item not available on the software update server
-```
-
-execute:
-
-```bash
-softwareupdate --list
-```
-
-Depois:
-
-```bash
-softwareupdate --install --all
-```
-
-Isso atualiza o sistema e libera a instalação das ferramentas.
-
----
-
-## 3. Aceitar licença do Xcode
-
-Após instalar as ferramentas, execute:
-
-```bash
-sudo xcodebuild -license
-```
-
-Role até o final apertando:
-
-```txt
-Enter
-```
-
-Depois digite:
-
-```txt
-agree
-```
-
----
-
-## 4. Verificar instalação
-
-Execute:
-
-```bash
-g++ --version
-```
-
-Se aparecer a versão do compilador, está tudo funcionando.
-
-Exemplo:
-
-```txt
-Apple clang version ...
-```
 
 ---
 
@@ -152,33 +38,103 @@ T1_Sistemas_Operacionais/
 
 ## FCFS (First Come First Served)
 
-Executa os processos na ordem de chegada.
+O algoritmo FCFS executa os processos na ordem em que chegam na fila.
+
+Características:
+
+- Não preemptivo
+- Simples implementação
+- Pode gerar efeito de fila longa
+- O primeiro processo ocupa a CPU até finalizar
+
+Exemplo:
+
+```txt
+P1 -> P2 -> P3 -> P4
+```
 
 ---
 
 ## SJF Não Preemptivo
 
-Executa primeiro o processo com menor duração entre os disponíveis.
+O algoritmo SJF (Shortest Job First) escolhe o processo com menor duração entre os disponíveis.
+
+Características:
+
+- Não preemptivo
+- Reduz tempo médio de espera
+- Processos menores possuem prioridade natural
+- O processo executa até finalizar
+
+Exemplo:
+
+```txt
+P2 -> P4 -> P3 -> P1
+```
 
 ---
 
 ## SJF Preemptivo (SRTF)
 
-Sempre executa o processo com menor tempo restante.
+O algoritmo SJF Preemptivo (Shortest Remaining Time First) sempre executa o processo com menor tempo restante.
+
+Características:
+
+- Preemptivo
+- Pode interromper processos em execução
+- Melhora o tempo médio de retorno
+- Troca constantemente o processo ativo quando aparece um menor
+
+Exemplo:
+
+```txt
+P1 -> P2 -> P1 -> P4 -> P3
+```
 
 ---
 
 ## Escalonamento por Prioridade
 
-Executa primeiro o processo de maior prioridade.
+O algoritmo de Prioridade executa primeiro o processo com maior prioridade.
 
-Menor número = maior prioridade.
+No projeto:
+
+```txt
+Menor número = maior prioridade
+```
+
+Características:
+
+- Não preemptivo
+- Processos mais importantes executam primeiro
+- Pode causar starvation em processos de baixa prioridade
+
+Exemplo:
+
+```txt
+P2 -> P1 -> P4 -> P3
+```
 
 ---
 
 ## Round Robin
 
-Executa os processos em fatias de tempo utilizando Quantum.
+O algoritmo Round Robin executa os processos utilizando fatias de tempo chamadas Quantum.
+
+Características:
+
+- Preemptivo
+- Cada processo utiliza a CPU por um tempo limitado
+- Após o quantum, o processo volta para a fila
+- Muito utilizado em sistemas interativos
+
+O Quantum é informado diretamente no terminal durante a execução do algoritmo.
+
+Exemplo:
+
+```txt
+P1 -> P2 -> P3 -> P4 -> P1 ...
+```
 
 ---
 
@@ -187,19 +143,24 @@ Executa os processos em fatias de tempo utilizando Quantum.
 O arquivo `entrada.txt` possui o seguinte formato:
 
 ```txt
-2
-P1 0 5 2
-P2 1 3 1
-P3 2 8 3
-P4 3 6 2
+P1 0 10 2
+P2 3 5 1
+P3 5 8 3
+P4 7 4 2
 ```
 
 Formato:
 
 ```txt
-Quantum
 Nome Chegada Duracao Prioridade
 ```
+
+Onde:
+
+- Nome = identificação do processo
+- Chegada = instante de chegada
+- Duracao = tempo necessário de CPU
+- Prioridade = prioridade do processo
 
 ---
 
@@ -243,9 +204,21 @@ Ao executar os algoritmos, o sistema mostra:
 
 - Início da execução
 - Finalização dos processos
+- Ordem de execução
 - Tempo de espera
 - Tempo de retorno
 - Tempo de término
+
+---
+
+# Exemplo de Execução
+
+```txt
+Tempo 0: P1 iniciou execucao.
+Tempo 10: P1 finalizou.
+Tempo 10: P2 iniciou execucao.
+Tempo 15: P2 finalizou.
+```
 
 ---
 
@@ -301,11 +274,13 @@ git push -u origin main
 # Tecnologias Utilizadas
 
 - C++
-- STL (vector, queue, algorithm)
+- STL
+- Vector
+- Queue
+- Algorithm
 - Git
 - GitHub
 - VSCode
-- macOS Terminal
 
 ---
 
