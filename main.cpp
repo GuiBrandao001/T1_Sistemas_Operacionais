@@ -18,9 +18,8 @@ struct Processo {
     int retorno;
 };
 
-void mostrarProcessos(vector<Processo> processos, int quantum) {
-    cout << "\n===== PROCESSOS CARREGADOS =====\n";
-    cout << "Quantum: " << quantum << "\n\n";
+void mostrarProcessos(vector<Processo> processos) {
+    cout << "\n===== PROCESSOS CARREGADOS =====\n\n";
 
     for (int i = 0; i < processos.size(); i++) {
         cout << processos[i].nome
@@ -29,6 +28,20 @@ void mostrarProcessos(vector<Processo> processos, int quantum) {
              << " | Prioridade: " << processos[i].prioridade
              << endl;
     }
+}
+
+void mostrarOrdemExecucao(vector<string> ordem) {
+    cout << "\n===== ORDEM DE EXECUCAO =====\n";
+
+    for (int i = 0; i < ordem.size(); i++) {
+        cout << ordem[i];
+
+        if (i < ordem.size() - 1) {
+            cout << " -> ";
+        }
+    }
+
+    cout << endl;
 }
 
 void mostrarResumo(vector<Processo> processos) {
@@ -49,6 +62,8 @@ void mostrarResumo(vector<Processo> processos) {
 
 void fcfs(vector<Processo> processos) {
     cout << "\n===== FCFS =====\n";
+
+    vector<string> ordem;
 
     sort(processos.begin(), processos.end(), [](Processo a, Processo b) {
         return a.chegada < b.chegada;
@@ -73,16 +88,25 @@ void fcfs(vector<Processo> processos) {
         processos[i].retorno = processos[i].termino - processos[i].chegada;
         processos[i].espera = processos[i].retorno - processos[i].duracao;
 
+        ordem.push_back(
+            processos[i].nome + "[" +
+            to_string(processos[i].inicio) + "-" +
+            to_string(processos[i].termino) + "]"
+        );
+
         cout << "Tempo " << tempoAtual
              << ": " << processos[i].nome
              << " finalizou.\n";
     }
 
+    mostrarOrdemExecucao(ordem);
     mostrarResumo(processos);
 }
 
 void sjfNaoPreemptivo(vector<Processo> processos) {
     cout << "\n===== SJF NAO PREEMPTIVO =====\n";
+
+    vector<string> ordem;
 
     int tempoAtual = 0;
     int concluidos = 0;
@@ -123,6 +147,12 @@ void sjfNaoPreemptivo(vector<Processo> processos) {
         processos[escolhido].espera =
             processos[escolhido].retorno - processos[escolhido].duracao;
 
+        ordem.push_back(
+            processos[escolhido].nome + "[" +
+            to_string(processos[escolhido].inicio) + "-" +
+            to_string(processos[escolhido].termino) + "]"
+        );
+
         cout << "Tempo " << tempoAtual
              << ": " << processos[escolhido].nome
              << " finalizou.\n";
@@ -131,15 +161,21 @@ void sjfNaoPreemptivo(vector<Processo> processos) {
         concluidos++;
     }
 
+    mostrarOrdemExecucao(ordem);
     mostrarResumo(processos);
 }
 
 void sjfPreemptivo(vector<Processo> processos) {
     cout << "\n===== SJF PREEMPTIVO =====\n";
 
+    vector<string> ordem;
+
     int tempoAtual = 0;
     int concluidos = 0;
     int n = processos.size();
+
+    string processoAnterior = "";
+    int inicioBloco = -1;
 
     while (concluidos < n) {
         int escolhido = -1;
@@ -156,12 +192,36 @@ void sjfPreemptivo(vector<Processo> processos) {
         }
 
         if (escolhido == -1) {
+            if (processoAnterior != "") {
+                ordem.push_back(
+                    processoAnterior + "[" +
+                    to_string(inicioBloco) + "-" +
+                    to_string(tempoAtual) + "]"
+                );
+
+                processoAnterior = "";
+                inicioBloco = -1;
+            }
+
             tempoAtual++;
             continue;
         }
 
         if (processos[escolhido].inicio == -1) {
             processos[escolhido].inicio = tempoAtual;
+        }
+
+        if (processoAnterior != processos[escolhido].nome) {
+            if (processoAnterior != "") {
+                ordem.push_back(
+                    processoAnterior + "[" +
+                    to_string(inicioBloco) + "-" +
+                    to_string(tempoAtual) + "]"
+                );
+            }
+
+            processoAnterior = processos[escolhido].nome;
+            inicioBloco = tempoAtual;
         }
 
         cout << "Tempo " << tempoAtual
@@ -186,11 +246,22 @@ void sjfPreemptivo(vector<Processo> processos) {
         }
     }
 
+    if (processoAnterior != "") {
+        ordem.push_back(
+            processoAnterior + "[" +
+            to_string(inicioBloco) + "-" +
+            to_string(tempoAtual) + "]"
+        );
+    }
+
+    mostrarOrdemExecucao(ordem);
     mostrarResumo(processos);
 }
 
 void prioridade(vector<Processo> processos) {
     cout << "\n===== PRIORIDADE =====\n";
+
+    vector<string> ordem;
 
     int tempoAtual = 0;
     int concluidos = 0;
@@ -231,6 +302,12 @@ void prioridade(vector<Processo> processos) {
         processos[escolhido].espera =
             processos[escolhido].retorno - processos[escolhido].duracao;
 
+        ordem.push_back(
+            processos[escolhido].nome + "[" +
+            to_string(processos[escolhido].inicio) + "-" +
+            to_string(processos[escolhido].termino) + "]"
+        );
+
         cout << "Tempo " << tempoAtual
              << ": " << processos[escolhido].nome
              << " finalizou.\n";
@@ -239,11 +316,14 @@ void prioridade(vector<Processo> processos) {
         concluidos++;
     }
 
+    mostrarOrdemExecucao(ordem);
     mostrarResumo(processos);
 }
 
 void roundRobin(vector<Processo> processos, int quantum) {
     cout << "\n===== ROUND ROBIN =====\n";
+
+    vector<string> ordem;
 
     int tempoAtual = 0;
     int concluidos = 0;
@@ -273,6 +353,7 @@ void roundRobin(vector<Processo> processos, int quantum) {
             processos[atual].inicio = tempoAtual;
         }
 
+        int inicioExecucao = tempoAtual;
         int tempoExecucao;
 
         if (processos[atual].restante > quantum) {
@@ -288,6 +369,12 @@ void roundRobin(vector<Processo> processos, int quantum) {
 
         processos[atual].restante -= tempoExecucao;
         tempoAtual += tempoExecucao;
+
+        ordem.push_back(
+            processos[atual].nome + "[" +
+            to_string(inicioExecucao) + "-" +
+            to_string(tempoAtual) + "]"
+        );
 
         for (int i = 0; i < n; i++) {
             if (!entrouNaFila[i] && processos[i].chegada <= tempoAtual) {
@@ -317,12 +404,12 @@ void roundRobin(vector<Processo> processos, int quantum) {
         }
     }
 
+    mostrarOrdemExecucao(ordem);
     mostrarResumo(processos);
 }
 
 int main() {
     vector<Processo> processos;
-    int quantum;
     int opcao;
 
     ifstream arquivo("entrada.txt");
@@ -331,8 +418,6 @@ int main() {
         cout << "Erro ao abrir o arquivo entrada.txt" << endl;
         return 1;
     }
-
-    arquivo >> quantum;
 
     Processo processo;
 
@@ -367,7 +452,7 @@ int main() {
 
         switch (opcao) {
             case 1:
-                mostrarProcessos(processos, quantum);
+                mostrarProcessos(processos);
                 break;
 
             case 2:
@@ -376,19 +461,25 @@ int main() {
 
             case 3:
                 sjfNaoPreemptivo(processos);
-            break;
+                break;
 
             case 4:
                 sjfPreemptivo(processos);
-            break;
+                break;
 
             case 5:
                 prioridade(processos);
                 break;
 
-            case 6:
+            case 6: {
+                int quantum;
+
+                cout << "Informe o quantum: ";
+                cin >> quantum;
+
                 roundRobin(processos, quantum);
                 break;
+            }
 
             case 0:
                 cout << "\nEncerrando simulador.\n";
