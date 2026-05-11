@@ -1,27 +1,23 @@
-# T1 - Simulador de Escalonamento de Processos
+# T1 - Simulador de Escalonamento
 
 Trabalho desenvolvido para a disciplina de Sistemas Operacionais utilizando C++.
 
----
+O projeto simula diferentes algoritmos de escalonamento de processos utilizados em sistemas operacionais.
 
-# Objetivo
+O sistema realiza:
 
-O projeto consiste na implementação de um simulador de escalonamento de processos capaz de executar diferentes algoritmos utilizados por sistemas operacionais para gerenciamento da CPU.
+- leitura dos processos por arquivo
+- execução dos algoritmos
+- exibição da ordem de processamento
+- cálculo de métricas dos processos
 
-O simulador realiza:
+As métricas exibidas são:
 
-- Leitura de processos via arquivo
-- Simulação dos algoritmos de escalonamento
-- Exibição da execução dos processos
-- Exibição da ordem de processamento
-- Cálculo de métricas:
-  - Tempo de espera
-  - Tempo de retorno
-  - Tempo de término
+- tempo de espera
+- tempo de retorno
+- tempo de término
 
----
-
-# Estrutura do Projeto
+## Estrutura do Projeto
 
 ```txt
 T1_Sistemas_Operacionais/
@@ -32,70 +28,23 @@ T1_Sistemas_Operacionais/
 └── .gitignore
 ```
 
----
+## Algoritmos Implementados
 
-# Algoritmos Implementados
+### FCFS
 
-## FCFS (First Come First Served)
+Executa os processos na ordem de chegada.
 
-O algoritmo FCFS executa os processos na ordem em que chegam na fila.
+### SJF Não Preemptivo
 
-Características:
+Executa primeiro o processo com menor duração entre os disponíveis.
 
-- Não preemptivo
-- Simples implementação
-- Pode gerar efeito de fila longa
-- O primeiro processo ocupa a CPU até finalizar
+### SJF Preemptivo (SRTF)
 
-Exemplo:
+Executa sempre o processo com menor tempo restante.
 
-```txt
-P1 -> P2 -> P3 -> P4
-```
+### Prioridade
 
----
-
-## SJF Não Preemptivo
-
-O algoritmo SJF (Shortest Job First) escolhe o processo com menor duração entre os disponíveis.
-
-Características:
-
-- Não preemptivo
-- Reduz tempo médio de espera
-- Processos menores possuem prioridade natural
-- O processo executa até finalizar
-
-Exemplo:
-
-```txt
-P2 -> P4 -> P3 -> P1
-```
-
----
-
-## SJF Preemptivo (SRTF)
-
-O algoritmo SJF Preemptivo (Shortest Remaining Time First) sempre executa o processo com menor tempo restante.
-
-Características:
-
-- Preemptivo
-- Pode interromper processos em execução
-- Melhora o tempo médio de retorno
-- Troca constantemente o processo ativo quando aparece um menor
-
-Exemplo:
-
-```txt
-P1 -> P2 -> P1 -> P4 -> P3
-```
-
----
-
-## Escalonamento por Prioridade
-
-O algoritmo de Prioridade executa primeiro o processo com maior prioridade.
+Executa primeiro o processo com maior prioridade.
 
 No projeto:
 
@@ -103,42 +52,13 @@ No projeto:
 Menor número = maior prioridade
 ```
 
-Características:
+### Round Robin
 
-- Não preemptivo
-- Processos mais importantes executam primeiro
-- Pode causar starvation em processos de baixa prioridade
+Executa os processos utilizando fatias de tempo (quantum).
 
-Exemplo:
+O quantum é informado diretamente no terminal durante a execução.
 
-```txt
-P2 -> P1 -> P4 -> P3
-```
-
----
-
-## Round Robin
-
-O algoritmo Round Robin executa os processos utilizando fatias de tempo chamadas Quantum.
-
-Características:
-
-- Preemptivo
-- Cada processo utiliza a CPU por um tempo limitado
-- Após o quantum, o processo volta para a fila
-- Muito utilizado em sistemas interativos
-
-O Quantum é informado diretamente no terminal durante a execução do algoritmo.
-
-Exemplo:
-
-```txt
-P1 -> P2 -> P3 -> P4 -> P1 ...
-```
-
----
-
-# Entrada
+## Entrada
 
 O arquivo `entrada.txt` possui o seguinte formato:
 
@@ -159,12 +79,10 @@ Onde:
 
 - Nome = identificação do processo
 - Chegada = instante de chegada
-- Duracao = tempo necessário de CPU
+- Duracao = tempo de CPU necessário
 - Prioridade = prioridade do processo
 
----
-
-# Compilação
+## Compilação
 
 No terminal:
 
@@ -172,19 +90,13 @@ No terminal:
 g++ main.cpp -o simulador
 ```
 
----
-
-# Execução
+## Execução
 
 ```bash
 ./simulador
 ```
 
----
-
-# Menu do Sistema
-
-O programa apresenta um menu interativo com as opções:
+## Menu do Sistema
 
 ```txt
 1 - Mostrar processos carregados
@@ -196,57 +108,37 @@ O programa apresenta um menu interativo com as opções:
 0 - Sair
 ```
 
----
+## Informações Exibidas
 
-# Informações Exibidas
+Durante a execução dos algoritmos o sistema mostra:
 
-Ao executar os algoritmos, o sistema mostra:
+- início da execução
+- finalização dos processos
+- ordem de execução
+- tempo de espera
+- tempo de retorno
+- tempo de término
 
-- Início da execução
-- Finalização dos processos
-- Ordem de execução
-- Tempo de espera
-- Tempo de retorno
-- Tempo de término
-
----
-
-# Exemplo de Execução
+## Exemplo de Saída
 
 ```txt
 Tempo 0: P1 iniciou execucao.
 Tempo 10: P1 finalizou.
+
 Tempo 10: P2 iniciou execucao.
 Tempo 15: P2 finalizou.
 ```
 
----
-
-# Tecnologias Utilizadas
+## Tecnologias Utilizadas
 
 - C++
 - STL
-- Vector
-- Queue
-- Algorithm
-- Git
-- GitHub
 - VSCode
 
----
-
-# Autor
+## Autor
 
 Guilherme de Araújo Brandão
 
----
-
-# Disciplina
+## Disciplina
 
 Sistemas Operacionais
-
----
-
-# Observações
-
-Projeto desenvolvido com fins acadêmicos para estudo de algoritmos de escalonamento de processos em sistemas operacionais.
